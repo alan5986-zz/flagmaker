@@ -1,0 +1,2 @@
+# flagmaker
+Random flag generator
