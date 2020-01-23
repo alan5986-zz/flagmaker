@@ -1,10 +1,8 @@
-
-
 var width = 600;
 var height = 400;
-
 var styles = ["horizontalBars", "verticalBars", "cross"]
 var features = [true,false]
+var flagColours = ["e0201b","a22b2b","b1793a","25369d","eeede9","4690c9","100e10","3d9139","626051","f5d126","ffffff","e6194B","3cb44b","ffe119","4363d8","f58231","42d4f4","469990","800000","aaffc3","000075"]
 
 class Flag{
     constructor(style,feature,colours){
@@ -27,12 +25,8 @@ class Flag{
 }
 
 function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+    var colour = flagColours[Math.floor(Math.random()*flagColours.length)]
+    return "#" + colour;
 }
 
 function buildFlag(){
@@ -123,29 +117,21 @@ function drawFeature(feature){
     var centerX = width/2;
     var centerY = height/2;
     var radius = 120;
-    
-    
     var option = Math.floor((Math.random() * 28) + 1);
     var imgPath = "images/" + option + ".png";
     console.log(imgPath)
     var imgObj = new Image();
 
-    
-
     imgObj.src = imgPath;
     imgObj.onload = function(){
         
-        console.log("image loaded")
+        
         ctx2.fillStyle = getRandomColor();
         ctx2.fillRect(0, 0, width, height);
         ctx2.globalCompositeOperation = "destination-in";
         ctx2.drawImage(imgObj,centerX-100,centerY-100,200,200);
         ctx.drawImage(canvas2,0,0)
- 
     };   
 
 }
-
-
-
 buildFlag()
