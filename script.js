@@ -136,7 +136,7 @@ function drawFeature(){
     var centerX = width/2;
     var centerY = height/2;
     var radius = 120;
-    var option = Math.floor((Math.random() * 37) + 1);
+    var option = Math.floor((Math.random() * 38) + 1);
     var imgPath = "images/" + option + ".png";
     var img = new Image();
 
