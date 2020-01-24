@@ -3,6 +3,7 @@ var height = 400;
 var styles = ["horizontalBars", "verticalBars", "cross"]
 var features = [true,false]
 var flagColours = ["e0201b","a22b2b","b1793a","25369d","eeede9","4690c9","100e10","3d9139","626051","f5d126","ffffff","e6194B","3cb44b","ffe119","4363d8","f58231","42d4f4","469990","800000","aaffc3","000075"]
+var usedColours = []
 
 class Flag{
     constructor(style,feature,colours){
@@ -40,7 +41,6 @@ function buildFlag(){
     }
 
     flag = new Flag(style,feature,colours) 
-    console.log(flag) 
     drawFlag(flag)
 }
 
@@ -52,18 +52,31 @@ function drawFlag(flag){
     style = flag.getStyle();
     colours = flag.getcolours();
     feature = flag.getFeature();
+    usedColours = []
+    
 
     //draw vertical flag
     if(style == "verticalBars"){
         if(colours == 1){
-            ctx.fillStyle = getRandomColor();
+            c = getRandomColor();
+            usedColours.push(c)
+            ctx.fillStyle = c;
             ctx.fillRect(0,0, width,height);
         } else {
             for(i=0; i < colours; i++){
-                ctx.fillStyle = getRandomColor();
+                c = getRandomColor();
+                usedColours.push(c)
+                ctx.fillStyle = c;
                 ctx.fillRect(0,0, width/colours,height);
-                ctx.fillStyle = getRandomColor();
+                c2 = getRandomColor();
+                usedColours.push(c2)
+                ctx.fillStyle = c2;
                 ctx.fillRect((width/colours)*i, 0, width/colours,height);
+            }
+
+            if(colours == 3){
+                usedColours = [];
+  
             }
         }
     }
@@ -71,13 +84,19 @@ function drawFlag(flag){
     //draw horizontal flag
     if(style == "horizontalBars"){
         if(colours == 1){
-            ctx.fillStyle = getRandomColor();
+            c = getRandomColor();
+            usedColours.push(c)
+            ctx.fillStyle = c;
             ctx.fillRect(0,0, width,height);
         } else {
             for(i=0; i < colours; i++){
-                ctx.fillStyle = getRandomColor();
+                c = getRandomColor();
+                usedColours.push(c)
+                ctx.fillStyle = c;
                 ctx.fillRect(0,0, width, height/colours);
-                ctx.fillStyle = getRandomColor();
+                c2 = getRandomColor();
+                usedColours.push(c2)
+                ctx.fillStyle = c2;
                 ctx.fillRect(0, (height/colours)*i, width, height/colours);
             }
         }
@@ -102,13 +121,13 @@ function drawFlag(flag){
     //draw feature
     if(feature){
 
-        drawFeature(feature)
+        drawFeature()
 
     }
   
 }
 
-function drawFeature(feature){
+function drawFeature(){
 
     var canvas = document.getElementById("canvas");
     var canvas2 = document.getElementById("canvas2");
@@ -117,19 +136,29 @@ function drawFeature(feature){
     var centerX = width/2;
     var centerY = height/2;
     var radius = 120;
-    var option = Math.floor((Math.random() * 28) + 1);
+    var option = Math.floor((Math.random() * 37) + 1);
     var imgPath = "images/" + option + ".png";
-    console.log(imgPath)
-    var imgObj = new Image();
+    var img = new Image();
 
-    imgObj.src = imgPath;
-    imgObj.onload = function(){
+    img.src = imgPath;
+    img.onload = function(){
         
+        ogWidth = img.naturalWidth;
+        ogHeight = img.naturalHeight;
+        newHeight = 180;
+
+        reduction = newHeight/ogHeight
+        newWidth = ogWidth*reduction
+        c = getRandomColor();
         
-        ctx2.fillStyle = getRandomColor();
+        while(usedColours.includes(c)){
+            c = getRandomColor();       
+        } 
+
+        ctx2.fillStyle = c
         ctx2.fillRect(0, 0, width, height);
         ctx2.globalCompositeOperation = "destination-in";
-        ctx2.drawImage(imgObj,centerX-100,centerY-100,200,200);
+        ctx2.drawImage(img,centerX-(newWidth/2),centerY-(newHeight/2),newWidth,newHeight);
         ctx.drawImage(canvas2,0,0)
     };   
 
